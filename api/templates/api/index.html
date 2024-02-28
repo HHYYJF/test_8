@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата товара</title>
+</head>
+<body style="text-align:  center">
+<h1>Выбранный товар</h1>
+{% for i in tovat %}
+<div>
+    <a href="{% url 'detail' i_det=i.pk %}"><p>{{i.name}}</p></a>
+    {% if i.bool == True %}
+        <a href="{% url 'bool_p' i_bool=i.pk %}"> <div style="color:#2E8B57"> Добавлено что бы оплатить </div> </a>
+     {% else %}
+        <a href="{% url 'bool_p' i_bool=i.pk %}"> <div style="color:#DC143C"> Добавить для оплаты</div></a>
+     {% endif %}
+</div>
+<div>
+    <p>Цена:
+        {% if i.currency == "usd" %}
+            {{ i.price }}$
+        {% elif i.currency == "eur" %}
+            {{ i.price }} €
+        {% else %}
+            {{ i.price }} P
+        {% endif %}
+    </p>
+</div>
+---
+{% endfor %}
+<div>
+    <h3> Выберете валюту</h3>
+<div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Select</button>
+</form>
+</div>
+
+
+{% if sum_tovar > 0 %}
+    <div>общая сумма для оплаты</div>
+    <div>
+        <a href="{% url 'buy' pk_id=0%}"> Оплатить: {{ sum_tovar}}</a>
+    </div>
+{% endif %}
+<p> </p>
+<a href="/admin" style="color: #8B0000;">
+        <div>
+            логин: admin
+        </div>
+        <div>
+            пароль: admin
+        </div>
+    </a>
+
+</div>
+</body>
+</html>
